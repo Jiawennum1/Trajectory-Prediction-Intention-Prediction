@@ -2,3 +2,51 @@
 Trajectory Prediction&amp; Intention Prediction for autonomous driving, some basic knowledge
 Python八股文
 1.上下文管理器：一种资源管理的机制，常用于需要进入和退出某种运行环境的场景。典型应用包括文件操作、数据库连接、线程锁。上下文管理器确保资源在使用后正确地释放，避免资源泄露或未关闭问题
+上下文管理器使用 with 语句来操作。它通过两个特殊方法实现：
+__enter__()：在进入上下文时执行的代码，通常用于资源初始化。
+__exit__(exc_type, exc_value, traceback)：在退出上下文时执行的代码，通常用于资源清理。
+exc_type：异常的类型。
+exc_value：异常的具体值。
+traceback：异常的追溯信息。
+1）文件操作例子：
+with open("example.txt", "w") as file:
+    file.write("Hello, Python!")
+等价于手动实现：
+file = open("example.txt", "w")
+try:
+    file.write("Hello, Python!")
+finally:
+    file.close()  # 确保文件被正确关闭
+
+在 with 语句中，open 函数返回一个上下文管理器：
+__enter__()：打开文件。
+__exit__()：确保无论是否发生异常，文件都能被正确关闭。
+2）锁（线程安全）
+在多线程编程中，使用上下文管理器可以简化锁的管理
+from threading import Lock
+
+lock = Lock()
+with lock:
+    # 临界区代码
+    print("This section is thread-safe.")
+等价于
+lock.acquire()
+try:
+    print("This section is thread-safe.")
+finally:
+    lock.release()
+3）自定义上下文管理器
+class LogManager:
+    def __enter__(self):
+        print("Starting log...")
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        print("Ending log...")
+        if exc_type:
+            print(f"An error occurred: {exc_value}")
+
+# 使用自定义上下文管理器
+with LogManager() as log:
+    print("Inside the context.")
+    # raise ValueError("Something went wrong!")  # 测试异常处理
