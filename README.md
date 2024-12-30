@@ -1,5 +1,6 @@
 # Trajectory-Prediction-Intention-Prediction
 Trajectory Prediction&amp; Intention Prediction for autonomous driving, some basic knowledge
+
 Python八股文
 1.上下文管理器：一种资源管理的机制，常用于需要进入和退出某种运行环境的场景。典型应用包括文件操作、数据库连接、线程锁。上下文管理器确保资源在使用后正确地释放，避免资源泄露或未关闭问题
 上下文管理器使用 with 语句来操作。它通过两个特殊方法实现：
@@ -49,7 +50,51 @@ class LogManager:
         if exc_type:
             print(f"An error occurred: {exc_value}")
 
-# 使用自定义上下文管理器
+使用自定义上下文管理器
 with LogManager() as log:
     print("Inside the context.")
     # raise ValueError("Something went wrong!")  # 测试异常处理
+
+上下文管理器的机制：依赖于 __enter__ 和 __exit__ 两个魔法方法，它们共同实现了上下文环境的管理。上下文管理器的核心目的是提供一种机制，用于在进入和退出某一代码块时执行特定的资源管理逻辑，例如资源分配、初始化、清理或释放。
+
+C++八股文
+1.lambda表达式结构：匿名函数的一种
+[捕获列表](参数列表) { 执行体 }
+#include <iostream>
+int main() {
+    int x = 10, y = 20;
+    auto lambda = [x, y](int a) { return x + y + a; };
+    std::cout << lambda(5) << std::endl; // 输出 35
+    return 0;
+}
+1）按值捕获（=）
+#include <iostream>
+int main() {
+    int x = 10, y = 20;
+    auto lambda = [=]() { return x + y; }; // 全部按值捕获
+    x = 15;  // 修改外部变量
+    std::cout << lambda() << std::endl; // 输出 30，与 x 修改无关
+    return 0;
+2）引用捕获（&）
+#include <iostream>
+int main() {
+    int x = 10, y = 20;
+    auto lambda = [&]() { return x + y; }; // 全部按引用捕获
+    x = 15;  // 修改外部变量
+    std::cout << lambda() << std::endl; // 输出 35，与 x 修改相关
+    return 0;
+}
+3）混合捕获（=，&var和&，var）
+#include <iostream>
+int main() {
+    int x = 10, y = 20;
+    auto lambda = [=, &y]() { return x + y; }; // x 按值，y 按引用
+    x = 15;
+    y = 25;  // 修改 y
+    std::cout << lambda() << std::endl; // 输出 35，x 不受修改影响，但 y 修改有效
+    return 0;
+}
+[=]：所有变量按值捕获。
+[&]：所有变量按引用捕获。
+[=, &var]：默认按值捕获，但 var 按引用捕获。
+[&, var]：默认按引用捕获，但 var 按值捕获。
