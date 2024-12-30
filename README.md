@@ -8,6 +8,7 @@ __exit__(exc_type, exc_value, traceback)：在退出上下文时执行的代码�
 exc_type：异常的类型。
 exc_value：异常的具体值。
 traceback：异常的追溯信息。
+
 1）文件操作例子：
 with open("example.txt", "w") as file:
     file.write("Hello, Python!")
@@ -21,6 +22,7 @@ finally:
 在 with 语句中，open 函数返回一个上下文管理器：
 __enter__()：打开文件。
 __exit__()：确保无论是否发生异常，文件都能被正确关闭。
+
 2）锁（线程安全）
 在多线程编程中，使用上下文管理器可以简化锁的管理
 from threading import Lock
@@ -35,6 +37,7 @@ try:
     print("This section is thread-safe.")
 finally:
     lock.release()
+    
 3）自定义上下文管理器
 class LogManager:
     def __enter__(self):
