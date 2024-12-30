@@ -60,7 +60,7 @@ with LogManager() as log:
 C++八股文
 
 1.lambda表达式结构：匿名函数的一种
-[捕获列表](参数列表) { 执行体 }
+[捕获列表] (参数列表) { 执行体 }
 #include <iostream>
 int main() {
     int x = 10, y = 20;
