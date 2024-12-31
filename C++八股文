@@ -1,0 +1,55 @@
+C++八股文
+
+1.lambda表达式结构：匿名函数的一种
+[捕获列表] (参数列表) { 执行体 }
+#include <iostream>
+int main() {
+    int x = 10, y = 20;
+    auto lambda = [x, y](int a) { return x + y + a; };
+    std::cout << lambda(5) << std::endl; // 输出 35
+    return 0;
+}
+1）按值捕获（=）
+#include <iostream>
+int main() {
+    int x = 10, y = 20;
+    auto lambda = [=]() { return x + y; }; // 全部按值捕获
+    x = 15;  // 修改外部变量
+    std::cout << lambda() << std::endl; // 输出 30，与 x 修改无关
+    return 0;
+2）引用捕获（&）
+#include <iostream>
+int main() {
+    int x = 10, y = 20;
+    auto lambda = [&]() { return x + y; }; // 全部按引用捕获
+    x = 15;  // 修改外部变量
+    std::cout << lambda() << std::endl; // 输出 35，与 x 修改相关
+    return 0;
+}
+3）混合捕获（=，&var和&，var）
+#include <iostream>
+int main() {
+    int x = 10, y = 20;
+    auto lambda = [=, &y]() { return x + y; }; // x 按值，y 按引用
+    x = 15;
+    y = 25;  // 修改 y
+    std::cout << lambda() << std::endl; // 输出 35，x 不受修改影响，但 y 修改有效
+    return 0;
+}
+[=]：所有变量按值捕获。
+[&]：所有变量按引用捕获。
+[=, &var]：默认按值捕获，但 var 按引用捕获。
+[&, var]：默认按引用捕获，但 var 按值捕获。
+
+2. 拷贝构造和拷贝赋值
+拷贝构造和拷贝赋值是两种用于将一个对象的内容复制到另一个对象的方法。它们的主要区别在于发生的场景和调用的函数。
+拷贝构造是用于创建一个对象的新实例，并用现有对象对它进行初始化的构造函数。
+拷贝构造实例：
+1）使用一个对象初始化另一个新对象
+MyClass obj1;
+MyClass obj2 = obj1;  // 调用拷贝构造
+2）将对象作为值传递给函数
+void func(MyClass obj);  // 参数按值传递，会调用拷贝构造
+3）函数按值返回对象
+MyClass func() { return obj; }  // 返回值按值传递，会调用拷贝构造
+拷贝赋值：将一个对象的值赋给另一个已经存在的对象。
